@@ -1,0 +1,4 @@
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/CMakeFiles/client.dir
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/CMakeFiles/server.dir

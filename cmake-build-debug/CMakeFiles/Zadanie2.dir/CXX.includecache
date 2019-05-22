@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/main.cpp
+boost/version.hpp
+-
+iostream
+-
+iomanip
+-
+boost/program_options.hpp
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/boost/program_options.hpp
+

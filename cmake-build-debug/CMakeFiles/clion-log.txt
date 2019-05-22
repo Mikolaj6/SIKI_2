@@ -1,0 +1,7 @@
+/home/mikoaj/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5429.37/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_C_COMPILER=/usr/bin/cc -DCMAKE_CXX_COMPILER=/usr/bin/c++ -G "CodeBlocks - Unix Makefiles" /home/mikoaj/Pulpit/Coding/SIKI/Zadanie2
+-- Boost version: 1.65.1
+-- Found the following Boost libraries:
+--   program_options
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug
