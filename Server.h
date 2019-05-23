@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <iomanip>
 #include "boost/program_options.hpp"
+#include "boost/filesystem.hpp"
 
 #include <stdlib.h>
 #include <string.h>

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include "boost/program_options.hpp"
+#include "boost/filesystem.hpp"
 
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +34,7 @@
 #include <sys/socket.h>
 #include <chrono>
 #include <ctime>
-
+#include <random>
 
 namespace po = boost::program_options;
 
@@ -68,6 +69,9 @@ int parseLine(std::string &line);
 int parseOptions(int argc, char *argv[]);
 
 int initializeUDPSocket(int &sock);
+
+// returns true when successful
+void setTimeout(int sock, time_t sec, suseconds_t micro);
 
 void do_discover(int &sock);
 

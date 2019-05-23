@@ -53,14 +53,12 @@ void do_discover(int &sock) {
     SIMPL_CMD bla;
     strcpy (bla.cmd, "HELLO\0\0\0\0\0");
     // -------------NEED TO SET GOOD CMD SEQ
-    bla.cmd_seq = htobe64((uint64_t) 1);
+    std::uniform_int_distribution<uint64_t > dis;
 
-    struct timeval tv;
-    tv.tv_sec = TIMEOUT;
-    tv.tv_usec = 0;
-    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0) {
-        syserr("Error");
-    }
+    std::random_device rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd());
+    uint64_t specialSeq = dis(gen);
+    bla.cmd_seq = htobe64((uint64_t) specialSeq);
 
     if(sendto(sock, &bla, 18, 0, (struct sockaddr *)&group_address, sendLen) != 18)
         syserr("Bad write for discover");
@@ -69,43 +67,48 @@ void do_discover(int &sock) {
     CMPLX_CMD reply;
     auto rcvLen = (socklen_t) sizeof(server_address);
 
-
-
-
-
+    setTimeout(sock, 0, 100);
     auto start = std::chrono::system_clock::now();
-    // Some computation here
-    auto end = std::chrono::system_clock::now();
-
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-
-    std::cout << "finished computation at " << std::ctime(&end_time)
-              << "elapsed time: " << elapsed_seconds.count() << "s\n";
-
 
     while(true) {
+        auto curr = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed_seconds = curr-start;
 
 
+        if(elapsed_seconds.count() > TIMEOUT) {
+            setTimeout(sock, TIMEOUT, 0);
+            std::cout << "Finished waiting\n";
+            break;
+        }
 
         memset(&server_address, 0, sizeof(server_address));
         ssize_t length = recvfrom(sock, &reply, sizeof(reply), 0,
                                   (struct sockaddr *) &server_address, &rcvLen);
+        if(length < 0){
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                continue;
+            }
+            syserr("Error reading GOOD DAY from server");
+        }
 
-
-
-
-        // -------------NEED TO SKIP AND CHECK CMD SEQUENCE
-        if(strcmp(reply.cmd, "GOOD DAY") != 0 || reply.cmd_seq != 1)
+        // -------------NEED TO SKIP
+        if(strcmp(reply.cmd, "GOOD_DAY") != 0 || be64toh(reply.cmd_seq) != specialSeq || length < 26 )
             std::cout << "BAD sequence\n";
 
-
         std::cout << "Found " << inet_ntoa(server_address.sin_addr) << " (" << reply.data << ") with free space " << be64toh(reply.param) << std::endl;
-
-        break;
     }
+}
 
+void printSkipping(uint16_t badPort, std::string badAddress) {
+    std::cout << "";
+}
 
+void setTimeout(int sock, time_t sec, suseconds_t micro) {
+    struct timeval tv;
+    tv.tv_sec = sec;
+    tv.tv_usec = micro;
+    if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0)
+        syserr("Setting timeout failed");
 }
 
 int initializeUDPSocket(int &sock) {
@@ -121,6 +124,8 @@ int initializeUDPSocket(int &sock) {
     optval = client::TTL_VALUE;
     if (setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, (void*)&optval, sizeof optval) < 0)
         syserr("setsockopt multicast ttl");
+
+    setTimeout(sock, TIMEOUT, 0);
 
     group_address.sin_family = AF_INET;
     group_address.sin_port = htons(CMD_PORT);

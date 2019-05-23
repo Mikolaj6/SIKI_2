@@ -29,6 +29,8 @@ iomanip
 -
 boost/program_options.hpp
 /home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/boost/program_options.hpp
+boost/filesystem.hpp
+/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/boost/filesystem.hpp
 stdlib.h
 -
 string.h
@@ -64,5 +66,11 @@ sys/types.h
 errno.h
 -
 sys/socket.h
+-
+chrono
+-
+ctime
+-
+random
 -
 

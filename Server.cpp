@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
 
                 CMPLX_CMD response;
                 memset(&response, 0, sizeof(response));
-                strcpy(response.cmd, "GOOD DAY\0\0");
-                response.cmd_seq = htobe64(specialSeq);
+                strcpy(response.cmd, "GOOD_DAY\0\0");
+                response.cmd_seq = specialSeq;
                 response.param = htobe64(freeSpace);
                 strcpy(response.data, MCAST_ADDR.c_str());
 
@@ -41,12 +41,11 @@ int main(int argc, char *argv[]) {
                 auto sendLen = (socklen_t) sizeof(client_address);
                 if(sendto(socket, &response, responseLength, 0, (struct sockaddr *)&client_address, sendLen) != responseLength) {
                     std::cerr << "Bad write for discover\n";
-                    goto for_loop;
                 }
                 break;
             }
             default: {
-                std::cout << "XDDDDD" << std::endl;
+                //std::cout << "XDDDDD" << std::endl;
                 break;
             }
         }
@@ -72,7 +71,8 @@ int readCMD(uint64_t &specialSeq, struct sockaddr_in &client_address,
 
     if(length < 0){
         if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            printf("TIMEOUT\n");
+//            if(server::debug_ON)
+//                printf("TIMEOUT\n");
             return -2;
         }
         std::cerr << "error receiving data";
