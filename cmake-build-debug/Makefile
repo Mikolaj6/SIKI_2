@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/mikoaj/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5429.37/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/home/mikoaj/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5429.37/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,30 +111,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named client
+# Target rules for targets named netstore-client
 
 # Build rule for target.
-client: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 client
-.PHONY : client
+netstore-client: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 netstore-client
+.PHONY : netstore-client
 
 # fast build rule for target.
-client/fast:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
-.PHONY : client/fast
+netstore-client/fast:
+	$(MAKE) -f CMakeFiles/netstore-client.dir/build.make CMakeFiles/netstore-client.dir/build
+.PHONY : netstore-client/fast
 
 #=============================================================================
-# Target rules for targets named server
+# Target rules for targets named netstore-server
 
 # Build rule for target.
-server: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 server
-.PHONY : server
+netstore-server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 netstore-server
+.PHONY : netstore-server
 
 # fast build rule for target.
-server/fast:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
-.PHONY : server/fast
+netstore-server/fast:
+	$(MAKE) -f CMakeFiles/netstore-server.dir/build.make CMakeFiles/netstore-server.dir/build
+.PHONY : netstore-server/fast
 
 Client.o: Client.cpp.o
 
@@ -142,7 +142,7 @@ Client.o: Client.cpp.o
 
 # target to build an object file
 Client.cpp.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/Client.cpp.o
+	$(MAKE) -f CMakeFiles/netstore-client.dir/build.make CMakeFiles/netstore-client.dir/Client.cpp.o
 .PHONY : Client.cpp.o
 
 Client.i: Client.cpp.i
@@ -151,7 +151,7 @@ Client.i: Client.cpp.i
 
 # target to preprocess a source file
 Client.cpp.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/Client.cpp.i
+	$(MAKE) -f CMakeFiles/netstore-client.dir/build.make CMakeFiles/netstore-client.dir/Client.cpp.i
 .PHONY : Client.cpp.i
 
 Client.s: Client.cpp.s
@@ -160,7 +160,7 @@ Client.s: Client.cpp.s
 
 # target to generate assembly for a file
 Client.cpp.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/Client.cpp.s
+	$(MAKE) -f CMakeFiles/netstore-client.dir/build.make CMakeFiles/netstore-client.dir/Client.cpp.s
 .PHONY : Client.cpp.s
 
 Server.o: Server.cpp.o
@@ -169,7 +169,7 @@ Server.o: Server.cpp.o
 
 # target to build an object file
 Server.cpp.o:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/Server.cpp.o
+	$(MAKE) -f CMakeFiles/netstore-server.dir/build.make CMakeFiles/netstore-server.dir/Server.cpp.o
 .PHONY : Server.cpp.o
 
 Server.i: Server.cpp.i
@@ -178,7 +178,7 @@ Server.i: Server.cpp.i
 
 # target to preprocess a source file
 Server.cpp.i:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/Server.cpp.i
+	$(MAKE) -f CMakeFiles/netstore-server.dir/build.make CMakeFiles/netstore-server.dir/Server.cpp.i
 .PHONY : Server.cpp.i
 
 Server.s: Server.cpp.s
@@ -187,7 +187,7 @@ Server.s: Server.cpp.s
 
 # target to generate assembly for a file
 Server.cpp.s:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/Server.cpp.s
+	$(MAKE) -f CMakeFiles/netstore-server.dir/build.make CMakeFiles/netstore-server.dir/Server.cpp.s
 .PHONY : Server.cpp.s
 
 # Help Target
@@ -196,10 +196,10 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
-	@echo "... client"
 	@echo "... rebuild_cache"
-	@echo "... server"
+	@echo "... edit_cache"
+	@echo "... netstore-client"
+	@echo "... netstore-server"
 	@echo "... Client.o"
 	@echo "... Client.i"
 	@echo "... Client.s"

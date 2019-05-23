@@ -35,6 +35,8 @@
 #include <chrono>
 #include <ctime>
 #include <random>
+#include <cwctype>
+#include <functional>
 
 namespace po = boost::program_options;
 
@@ -64,15 +66,26 @@ struct __attribute__((__packed__)) CMPLX_CMD_ {
 using SIMPL_CMD = struct SIMPL_CMD_;
 using CMPLX_CMD = struct CMPLX_CMD_;
 
+// Give two strings and checks first 10 bytes of both
+// True when C-strings are equal
+bool customStrCheck(const char *tab, const char *str);
+
+// Prints skipping for client
+void printSkipping(uint16_t badPort, std::string badAddress, int messageType);
+
+// Checks what client types and returns code representing typed command
 int parseLine(std::string &line);
 
+// 1 if options were set correctly, -1 otherwise
 int parseOptions(int argc, char *argv[]);
 
-int initializeUDPSocket(int &sock);
+// Initializes main UDP socket
+void initializeUDPSocket(int &sock);
 
-// returns true when successful
+// Sets timeout with given seconds and micro seconds
 void setTimeout(int sock, time_t sec, suseconds_t micro);
 
+// Function for discover
 void do_discover(int &sock);
 
 /* Wypisuje informację o błędnym zakończeniu funkcji systemowej

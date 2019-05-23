@@ -11,12 +11,10 @@ int main(int argc, char *argv[])
 {
     int UDP_sock;
 
-    // --------- Check if was successful
-    parseOptions(argc, argv);
+    if(parseOptions(argc, argv) != 1)
+        syserr("Some options were not set");
 
     initializeUDPSocket(UDP_sock);
-
-
     std::string line;
 
     while (std::getline (std::cin, line)) {
@@ -24,19 +22,21 @@ int main(int argc, char *argv[])
         int x = parseLine(line);
 
         if(x == 1) {
-            std::cout << "DISCOVER" << std::endl;
+            if(client::debug_ON)
+                std::cout << "DISCOVER" << std::endl;
             do_discover(UDP_sock);
-
             continue;
         }
 
         if (x == -1) {
-            std::cout << "ERROR" << std::endl;
+            if(client::debug_ON)
+                std::cout << "ERROR" << std::endl;
             break;
         }
 
         if (x == 0) {
-            std::cout << "EXIT" << std::endl;
+            if(client::debug_ON)
+                std::cout << "EXIT" << std::endl;
             break;
         }
     }
@@ -47,15 +47,15 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+// Function for discover
 void do_discover(int &sock) {
     auto sendLen = (socklen_t) sizeof(group_address);
 
     SIMPL_CMD bla;
     strcpy (bla.cmd, "HELLO\0\0\0\0\0");
-    // -------------NEED TO SET GOOD CMD SEQ
-    std::uniform_int_distribution<uint64_t > dis;
 
-    std::random_device rd;  //Will be used to obtain a seed for the random number engine
+    std::uniform_int_distribution<uint64_t > dis;
+    std::random_device rd;
     std::mt19937 gen(rd());
     uint64_t specialSeq = dis(gen);
     bla.cmd_seq = htobe64((uint64_t) specialSeq);
@@ -74,10 +74,10 @@ void do_discover(int &sock) {
         auto curr = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed_seconds = curr-start;
 
-
         if(elapsed_seconds.count() > TIMEOUT) {
             setTimeout(sock, TIMEOUT, 0);
-            std::cout << "Finished waiting\n";
+            if(client::debug_ON)
+                std::cout << "Finished waiting" << std::endl;
             break;
         }
 
@@ -91,18 +91,44 @@ void do_discover(int &sock) {
             syserr("Error reading GOOD DAY from server");
         }
 
-        // -------------NEED TO SKIP
-        if(strcmp(reply.cmd, "GOOD_DAY") != 0 || be64toh(reply.cmd_seq) != specialSeq || length < 26 )
-            std::cout << "BAD sequence\n";
-
-        std::cout << "Found " << inet_ntoa(server_address.sin_addr) << " (" << reply.data << ") with free space " << be64toh(reply.param) << std::endl;
+        if(length < 26)
+            printSkipping(ntohs(server_address.sin_port), inet_ntoa(server_address.sin_addr), 2);
+        else if(!customStrCheck(reply.cmd, "GOOD_DAY\0\0"))
+            printSkipping(ntohs(server_address.sin_port), inet_ntoa(server_address.sin_addr), 0);
+        else if(be64toh(reply.cmd_seq) != specialSeq)
+            printSkipping(ntohs(server_address.sin_port), inet_ntoa(server_address.sin_addr), 1);
+        else
+            std::cout << "Found " << inet_ntoa(server_address.sin_addr) << " (" << reply.data << ") with free space " << be64toh(reply.param) << std::endl;
     }
 }
 
-void printSkipping(uint16_t badPort, std::string badAddress) {
-    std::cout << "";
+// Give two strings and checks first 10 bytes of both
+// True when C-strings are equal
+bool customStrCheck(const char *tab, const char *str) {
+
+    for(int i=0; i<10; i++) {
+        if(tab[i] != str[i])
+            return false;
+    }
+    return true;
 }
 
+// Prints skipping for client
+void printSkipping(uint16_t badPort, std::string badAddress, int messageType) {
+    // Bad cmd field
+    if(messageType == 0)
+        std::cerr << "[PCKG ERROR] Skipping invalid package " << badAddress << ":" << badPort << ". Bad cmd field" << std::endl;
+
+    // Bad cmd sequence
+    if(messageType == 1)
+        std::cerr << "[PCKG ERROR] Skipping invalid package " << badAddress << ":" << badPort << ". Bad cmd sequence" << std::endl;
+
+    // Bad package length
+    if(messageType == 2)
+        std::cerr << "[PCKG ERROR] Skipping invalid package " << badAddress << ":" << badPort << ". Bad package length" << std::endl;
+}
+
+// Sets timeout with given seconds and micro seconds
 void setTimeout(int sock, time_t sec, suseconds_t micro) {
     struct timeval tv;
     tv.tv_sec = sec;
@@ -111,7 +137,8 @@ void setTimeout(int sock, time_t sec, suseconds_t micro) {
         syserr("Setting timeout failed");
 }
 
-int initializeUDPSocket(int &sock) {
+// Initializes main UDP socket
+void initializeUDPSocket(int &sock) {
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock < 0)
         syserr("socket");
@@ -133,17 +160,51 @@ int initializeUDPSocket(int &sock) {
         syserr("inet_aton");
 }
 
+// Checks what client types and returns code representing typed command
 int parseLine(std::string &line) {
+    std::string lineLowercase = line;
+    std::transform(lineLowercase.begin(), lineLowercase.end(), lineLowercase.begin(), ::tolower);
 
-    if (line.compare("discover") == 0) {
+    if (lineLowercase.find("discover") != std::string::npos) {
+
         return client::DISCOVER;
-    } else if (line.compare("exit") == 0) {
+    } else if (lineLowercase.find("exit") == std::string::npos) {
         return client::EXIT;
     } else {
         return client::ERROR;
     }
 }
 
+
+// Tests if line starts with a command and returns rest of the line when appropriate flag is set
+// -1 - requires something for rest
+// 0 - something can be in rest
+// 1 - requires nothing for rest
+bool testLine(std::string &line, std::string &command, std::string &rest, int flag) {
+
+    rest = "";
+
+    if(line.compare(0, command.length(), command) != 0)
+        return false;
+
+    rest = line.substr(command.length());
+    std::cout << "|" << rest << "|" << std::endl;
+
+
+    std::wstring::size_type firstPos = rest.find_first_not_of(' ');
+    std::wstring::size_type lastPos = rest.find_last_not_of(' ');
+
+    if()
+
+
+    command.length();
+
+
+
+
+}
+
+// 1 if options were set correctly, -1 otherwise
 int parseOptions(int argc, char *argv[]) {
 
     int succesfull = 1;
@@ -162,47 +223,51 @@ int parseOptions(int argc, char *argv[]) {
     po::notify(vm);
 
     if (vm.count("-help")) {
-        std::cout << desc << "\n";
+        std::cerr << desc << std::endl;
         return 0;
     }
 
     if (vm.count("-g")) {
         if(client::debug_ON)
             std::cout << "MCAST_ADDR was set to "
-                  << vm["-g"].as<std::string>() << ".\n";
+                  << vm["-g"].as<std::string>() << std::endl;
         MCAST_ADDR = vm["-g"].as<std::string>();
     } else {
-        std::cout << "MCAST_ADDR was not set.\n";
+        std::cerr << "MCAST_ADDR was not set." << std::endl;
         succesfull = -1;
     }
 
     if (vm.count("-p")) {
         if(client::debug_ON)
             std::cout << "CMD_PORT was set to "
-                  << vm["-p"].as<uint16_t>() << ".\n";
+                  << vm["-p"].as<uint16_t>() << std::endl;
         CMD_PORT = vm["-p"].as<uint16_t>();
     } else {
-        std::cout << "CMD_PORT was not set.\n";
+        std::cerr << "CMD_PORT was not set." << std::endl;
         succesfull = -1;
     }
 
     if (vm.count("-o")) {
         if(client::debug_ON)
             std::cout << "OUT_FLDR was set to "
-                      << vm["-o"].as<std::string>() << ".\n";
+                      << vm["-o"].as<std::string>() << "." << std::endl;
         OUT_FLDR = vm["-o"].as<std::string>();
     } else {
-        std::cout << "OUT_FLDR was not set.\n";
+        std::cerr << "OUT_FLDR was not set." << std::endl;
         succesfull = -1;
     }
 
     if (vm.count("-t")) {
         if(client::debug_ON)
             std::cout << "TIMEOUT was set to "
-                      << vm["-t"].as<int>() << ".\n";
+                      << vm["-t"].as<int>() << "." << std::endl;
         TIMEOUT = vm["-t"].as<int>();
+        if(TIMEOUT < 0 || TIMEOUT > 300){
+            succesfull = -1;
+            syserr("Bad timeout value");
+        }
     } else {
-        std::cout << "TIMEOUT was not set.\n";
+        std::cerr << "TIMEOUT was not set." << std::endl;
         succesfull = -1;
     }
 

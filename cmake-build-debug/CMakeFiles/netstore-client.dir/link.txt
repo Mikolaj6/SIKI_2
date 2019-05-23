@@ -1,0 +1,1 @@
+/usr/bin/c++  -lboost_program_options -g   CMakeFiles/netstore-client.dir/Client.cpp.o  -o netstore-client /usr/lib/x86_64-linux-gnu/libboost_program_options.so /usr/lib/x86_64-linux-gnu/libboost_filesystem.so /usr/lib/x86_64-linux-gnu/libboost_system.so 

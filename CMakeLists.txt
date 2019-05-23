@@ -7,9 +7,9 @@ set(CMAKE_CXX_FLAGS "-lboost_program_options")
 FIND_PACKAGE(Boost COMPONENTS program_options filesystem REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-add_executable(client Client.cpp Client.h)
-add_executable(server Server.cpp Server.h)
+add_executable(netstore-client Client.cpp Client.h)
+add_executable(netstore-server Server.cpp Server.h)
 
-TARGET_LINK_LIBRARIES(client ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(server ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(netstore-client ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(netstore-server ${Boost_LIBRARIES})
 

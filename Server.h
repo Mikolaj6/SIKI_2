@@ -59,16 +59,22 @@ struct __attribute__((__packed__)) CMPLX_CMD {
 using SIMPL_CMD = struct SIMPL_CMD;
 using CMPLX_CMD = struct CMPLX_CMD;
 
+// Give two strings and checks first 10 bytes of both
+// True when C-strings are equal
+bool customStrCheck(const char *tab, const char *str);
 
-// Return value is determines if operation was successfull
+// Handle discovery request
+void respondDiscover(int socket, uint64_t specialSeq, uint64_t freeSpace, struct sockaddr_in &client_address);
+
+// Parses options for the program 1 when successful -1 otherwise
 int parseOptions(int argc, char *argv[]);
 
 // REads input from simple cmd returns number representing the command
 int readCMD(uint64_t &specialSeq, struct sockaddr_in &client_address,
                    int &sock);
 
-// Initialize socket
-int initializeUDPSocket(int &sock);
+// Initialize main UDP socket
+void initializeUDPSocket(int &sock);
 
 /* Wypisuje informację o błędnym zakończeniu funkcji systemowej
 i kończy działanie programu. */

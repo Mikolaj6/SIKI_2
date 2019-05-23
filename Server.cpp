@@ -15,9 +15,12 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in client_address;
     SIMPL_CMD message;
 
-    parseOptions(argc, argv);
-    initializeUDPSocket(socket);
+    if(parseOptions(argc, argv) != 1) {
+        std::cerr << "Failed parsing options\n";
+        exit(1);
+    }
 
+    initializeUDPSocket(socket);
     uint64_t freeSpace = MAX_SPACE;
 
     while (true) {
@@ -25,23 +28,21 @@ int main(int argc, char *argv[]) {
         int cmd = readCMD(specialSeq, client_address, socket);
 
         switch (cmd) {
+            case -2: {
+                // TIMEOUT
+                break;
+            }
+            case -1: {
+                std::cout << "Non critical error occured\n";
+                break;
+            }
+            case 0: {
+                std::cout << "Nothing matched send message\n";
+                break;
+            }
             case 1: {
-                if(server::debug_ON) {
-                    std::cout << "Received listing request" << std::endl;
-                }
+                respondDiscover(socket, specialSeq, freeSpace, client_address);
 
-                CMPLX_CMD response;
-                memset(&response, 0, sizeof(response));
-                strcpy(response.cmd, "GOOD_DAY\0\0");
-                response.cmd_seq = specialSeq;
-                response.param = htobe64(freeSpace);
-                strcpy(response.data, MCAST_ADDR.c_str());
-
-                size_t responseLength = MCAST_ADDR.size() + 26;
-                auto sendLen = (socklen_t) sizeof(client_address);
-                if(sendto(socket, &response, responseLength, 0, (struct sockaddr *)&client_address, sendLen) != responseLength) {
-                    std::cerr << "Bad write for discover\n";
-                }
                 break;
             }
             default: {
@@ -50,14 +51,31 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+}
 
-    return 0;
+// Handle discovery request
+void respondDiscover(int socket, uint64_t specialSeq, uint64_t freeSpace, struct sockaddr_in &client_address) {
+    if(server::debug_ON)
+        std::cout << "Received discovery request" << std::endl;
+
+    CMPLX_CMD response;
+    memset(&response, 0, sizeof(response));
+    strcpy(response.cmd, "GOOD_DAY\0\0");
+    response.cmd_seq = specialSeq;
+    response.param = htobe64(freeSpace);
+    strcpy(response.data, MCAST_ADDR.c_str());
+
+    size_t responseLength = MCAST_ADDR.size() + 26;
+    auto sendLen = (socklen_t) sizeof(client_address);
+    if(sendto(socket, &response, responseLength, 0, (struct sockaddr *)&client_address, sendLen) != responseLength)
+        std::cerr << "Bad write for discover\n";
 }
 
 // Return:
 // -2 -> TIMEOUT
 // -1 -> ERROR OCCURED
-// 1 -> list all
+// 0 -> No match
+// 1 -> DISCOVER
 int readCMD(uint64_t &specialSeq, struct sockaddr_in &client_address,
                    int &sock) {
     memset(&client_address, 0, sizeof(client_address));
@@ -65,30 +83,42 @@ int readCMD(uint64_t &specialSeq, struct sockaddr_in &client_address,
     CMPLX_CMD messageCMPLX;
 
     auto rcvLen = (socklen_t) sizeof(client_address);
-
+    memset(&messageCMPLX, 0, sizeof(messageCMPLX));
     ssize_t length = recvfrom(sock, &messageCMPLX, sizeof(messageCMPLX), 0,
                                (struct sockaddr *) &client_address, &rcvLen);
 
     if(length < 0){
         if (errno == EAGAIN || errno == EWOULDBLOCK) {
-//            if(server::debug_ON)
-//                printf("TIMEOUT\n");
             return -2;
         }
         std::cerr << "error receiving data";
+        return -1;
     }
 
     specialSeq = messageCMPLX.cmd_seq;
-    if (strcmp("HELLO", messageCMPLX.cmd) == 0) {
+    if (length == 18 && customStrCheck("HELLO\0\0\0\0\0", messageCMPLX.cmd)) {
         return 1;
+    } else {
+        return 0;
     }
 
-    messageSIMPLE = *((SIMPL_CMD *) &messageCMPLX);
-    std::cout << "length " << length << " message.cmd " << messageSIMPLE.cmd << " cmd_seq: " << be64toh(messageSIMPLE.cmd_seq) << std::endl;
-    return 2;
+//    messageSIMPLE = *((SIMPL_CMD *) &messageCMPLX);
+//    std::cout << "length " << length << " message.cmd " << messageSIMPLE.cmd << " cmd_seq: " << be64toh(messageSIMPLE.cmd_seq) << std::endl;
 }
 
-int initializeUDPSocket(int &sock) {
+// Give two strings and checks first 10 bytes of both
+// True when C-strings are equal
+bool customStrCheck(const char *tab, const char *str) {
+
+    for(int i=0; i<10; i++) {
+        if(tab[i] != str[i])
+            return false;
+    }
+    return true;
+}
+
+// Initialize main UDP socket
+void initializeUDPSocket(int &sock) {
 
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock < 0)
@@ -125,6 +155,7 @@ int initializeUDPSocket(int &sock) {
         syserr("bind");
 }
 
+// Parses options for the program 1 when successful -1 otherwise
 int parseOptions(int argc, char *argv[]) {
 
     int succesfull = 1;
@@ -194,6 +225,11 @@ int parseOptions(int argc, char *argv[]) {
             std::cout << "TIMEOUT was set to "
                       << vm["-t"].as<int>() << ".\n";
         TIMEOUT = vm["-t"].as<int>();
+        if(TIMEOUT < 0 || TIMEOUT > 300){
+            succesfull = -1;
+
+            std::cerr << "Bad timeout value" << std::endl;
+        }
     } else {
         std::cout << "TIMEOUT was not set.\n";
         succesfull = -1;
