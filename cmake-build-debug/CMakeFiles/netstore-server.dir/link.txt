@@ -1,1 +1,1 @@
-/usr/bin/c++  -lboost_program_options -g   CMakeFiles/netstore-server.dir/Server.cpp.o  -o netstore-server /usr/lib/x86_64-linux-gnu/libboost_program_options.so /usr/lib/x86_64-linux-gnu/libboost_filesystem.so /usr/lib/x86_64-linux-gnu/libboost_system.so 
+/usr/bin/c++   -lboost_program_options -std=c++17 -pthread -g   CMakeFiles/netstore-server.dir/Server.cpp.o  -o netstore-server /usr/lib/x86_64-linux-gnu/libboost_program_options.so /usr/lib/x86_64-linux-gnu/libboost_filesystem.so /usr/lib/x86_64-linux-gnu/libboost_system.so 

@@ -1,0 +1,4 @@
+MCAST_ADDR was set to 239.10.11.12
+CMD_PORT was set to 40008
+OUT_FLDR was set to ./XD.
+TIMEOUT was set to 5.

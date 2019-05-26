@@ -3,7 +3,7 @@ project(Zadanie2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-lboost_program_options")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lboost_program_options -std=c++17 -pthread")
 FIND_PACKAGE(Boost COMPONENTS program_options filesystem REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 

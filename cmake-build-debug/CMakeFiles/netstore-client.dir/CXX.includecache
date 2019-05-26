@@ -77,4 +77,10 @@ cwctype
 -
 functional
 -
+regex
+-
+unordered_set
+-
+thread
+-
 

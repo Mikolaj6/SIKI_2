@@ -29,6 +29,12 @@ Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_files
 //Boost filesystem library (release)
 Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_filesystem.so
 
+//Boost foreach library (debug)
+Boost_FOREACH_LIBRARY_DEBUG:FILEPATH=Boost_FOREACH_LIBRARY_DEBUG-NOTFOUND
+
+//Boost foreach library (release)
+Boost_FOREACH_LIBRARY_RELEASE:FILEPATH=Boost_FOREACH_LIBRARY_RELEASE-NOTFOUND
+
 //Path to a file.
 Boost_INCLUDE_DIR:PATH=/usr/include
 
@@ -274,6 +280,10 @@ Boost_FILESSYSTEM_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 Boost_FILESYSTEM_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Boost_FILESYSTEM_LIBRARY_RELEASE
 Boost_FILESYSTEM_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_FOREACH_LIBRARY_DEBUG
+Boost_FOREACH_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_FOREACH_LIBRARY_RELEASE
+Boost_FOREACH_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Boost_INCLUDE_DIR
 Boost_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Boost_LIBRARY_DIR_DEBUG
@@ -436,7 +446,7 @@ ProcessorCount_cmd_getconf-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ProcessorCount_cmd_sysctl
 ProcessorCount_cmd_sysctl-ADVANCED:INTERNAL=1
 //Components requested for this build tree.
-_Boost_COMPONENTS_SEARCHED:INTERNAL=filessystem;filesystem;program_options;system
+_Boost_COMPONENTS_SEARCHED:INTERNAL=filessystem;filesystem;foreach;program_options;system
 //Last used Boost_INCLUDE_DIR value.
 _Boost_INCLUDE_DIR_LAST:INTERNAL=/usr/include
 //Last used Boost_LIBRARY_DIR_DEBUG value.
