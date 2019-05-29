@@ -83,4 +83,16 @@ unordered_set
 -
 thread
 -
+shared_mutex
+-
+mutex
+-
+boost/log/core.hpp
+-
+boost/log/trivial.hpp
+-
+boost/log/expressions.hpp
+-
+sstream
+-
 

@@ -2,8 +2,15 @@
 -- Boost version: 1.65.1
 -- Found the following Boost libraries:
 --   program_options
+--   log
 --   filesystem
+--   date_time
+--   log_setup
 --   system
+--   thread
+--   regex
+--   chrono
+--   atomic
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug

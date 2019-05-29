@@ -1,0 +1,26 @@
+// Reads data of length from socket
+// -1 -> Received info about close connection
+// 0  -> Successfully read another chunk of data
+// 1  -> Error reading occured
+int readSomething(void *to_read, int socket, uint32_t length) {
+    unsigned int prev_len = 0;
+    unsigned int remains = 0;
+
+    while (prev_len < length) {
+        remains = length - prev_len;
+        ssize_t len = read(socket, ((char *) to_read) + prev_len, remains);
+        if (len < 0) {
+            return 1;
+        }
+
+        if (len == 0) {
+            BOOST_LOG_TRIVIAL(debug) << "{UPLOAD} prev_len:" << prev_len << " len: " << len;
+            return -1;
+        }
+
+        prev_len += len;
+        if (prev_len == length)
+            return 0;
+    }
+}
+

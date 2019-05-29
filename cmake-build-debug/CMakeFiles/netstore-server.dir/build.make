@@ -80,8 +80,15 @@ netstore__server_EXTERNAL_OBJECTS =
 netstore-server: CMakeFiles/netstore-server.dir/Server.cpp.o
 netstore-server: CMakeFiles/netstore-server.dir/build.make
 netstore-server: /usr/lib/x86_64-linux-gnu/libboost_program_options.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_log.so
 netstore-server: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_log_setup.so
 netstore-server: /usr/lib/x86_64-linux-gnu/libboost_system.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_thread.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_regex.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
+netstore-server: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
 netstore-server: CMakeFiles/netstore-server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable netstore-server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/netstore-server.dir/link.txt --verbose=$(VERBOSE)
