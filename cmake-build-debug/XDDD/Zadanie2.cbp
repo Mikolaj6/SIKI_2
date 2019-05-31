@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Zadanie2"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="netstore-client">
+				<Option output="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/netstore-client" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_LOG_DYN_LINK"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 netstore-client"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="netstore-client/fast">
+				<Option output="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/netstore-client" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_LOG_DYN_LINK"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 netstore-client/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="netstore-server">
+				<Option output="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/netstore-server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_LOG_DYN_LINK"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 netstore-server"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="netstore-server/fast">
+				<Option output="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/netstore-server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_LOG_DYN_LINK"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 netstore-server/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/Client.cpp">
+			<Option target="netstore-client"/>
+		</Unit>
+		<Unit filename="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/Client.h">
+			<Option target="netstore-client"/>
+		</Unit>
+		<Unit filename="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/Server.cpp">
+			<Option target="netstore-server"/>
+		</Unit>
+		<Unit filename="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/Server.h">
+			<Option target="netstore-server"/>
+		</Unit>
+		<Unit filename="/home/mikoaj/Pulpit/Coding/SIKI/Zadanie2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

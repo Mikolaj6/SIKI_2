@@ -33,10 +33,34 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <sys/socket.h>
+#include <thread>
+#include <shared_mutex>
+#include <mutex>
+#include <sstream>
 
+// Test
+#include <netdb.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <boost/log/core.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
+
+namespace logging = boost::log;
+
+void init_logging()
+{
+    logging::core::get()->set_filter
+            (
+                    logging::trivial::severity > logging::trivial::fatal
+            );
+}
 
 namespace server {
     const int DEFAULT_SPACE  = 52428800;
@@ -44,6 +68,7 @@ namespace server {
     const bool debug_ON = true;
     const uint32_t MAX_DATA = 100000;
     const uint32_t MAX_SEND = 50000;
+    const uint32_t bufferSize = 10000;
 }
 
 struct __attribute__((__packed__)) SIMPL_CMD {
@@ -75,13 +100,19 @@ private:
 public:
     std::map<std::string, fs::path> availableFiles;
 
-    FileManager(std::string &SHRD_FLDR);
+    void initalizeAll(std::string &SHRD_FLDR);
 
-    int removeFile(std::string &fileName);
+    void createEmptyFileForUpdate(std::string fileName, uint64_t fileSize); // ---
 
-    bool fileExists(std::string &fileName);
+    void removeEmptyFileForUpdate(std::string fileName, uint64_t fileSize); // ---
 
-    uint64_t getFreeSpace();
+    std::string getFilePath(std::string filePath);
+
+    int removeFile(std::string &fileName); // ---
+
+    bool fileExists(std::string &fileName, bool takeMutex); //
+
+    uint64_t getFreeSpace(bool takeMutex); //
 };
 
 // Give two strings and checks first 10 bytes of both
@@ -92,32 +123,41 @@ bool customStrCheck(const char *tab, const char *str);
 void respondDiscover(int socket, uint64_t specialSeq, uint64_t freeSpace, struct sockaddr_in &client_address);
 
 // Handle search request
-void respondSearch(int socket, FileManager &fm, std::string &data, uint64_t specialSeq, struct sockaddr_in &client_address);
+void respondSearch(int socket, std::string &data, uint64_t specialSeq, struct sockaddr_in &client_address);
 
 // Handle remove request
-void respondRemove(FileManager &fm, std::string &data, struct sockaddr_in &client_address);
+void respondRemove(std::string &data, struct sockaddr_in &client_address);
 
 // Handle fetch request
-void respondFetch(FileManager &fm, std::string &data, uint64_t specialSeq, struct sockaddr_in &client_address);
+void respondFetch(int socket, std::string data, uint64_t specialSeq, struct sockaddr_in client_address);
+
+// Handle upload request
+void respondUpload(int socket, std::string data, uint64_t specialSeq, uint64_t param, struct sockaddr_in client_address);
+
+// Send File through TCP
+bool sendFile(int socket, std::string data);
+
+// Send File through TCP
+bool receiveFile(int socket, std::string data, uint64_t fileSize);
 
 // Parses options for the program 1 when successful -1 otherwise
 int parseOptions(int argc, char *argv[]);
 
 // REads input from simple cmd returns number representing the command
-int readCMD(uint64_t &specialSeq, std::string &data, struct sockaddr_in &client_address,
+int readCMD(uint64_t &specialSeq, uint64_t &param, std::string &data, struct sockaddr_in &client_address,
                    int &sock);
 
 // Initialize main UDP socket
 void initializeMainUDPSocket(int &sock);
 
-// Initialize TCP socket
-void TCPSocketServer(int &sock);
-
 /* Wypisuje informację o błędnym zakończeniu funkcji systemowej
 i kończy działanie programu. */
 void syserr(const char *fmt, ...);
 
-/* Wypisuje informację o błędzie i kończy działanie programu. */
-void fatal(const char *fmt, ...);
+// Sends data of length through socket
+bool sendSomething(void *to_send, int socket, uint32_t length);
+
+// Reads data of length from socket
+int readSomething(void *to_read, int socket, uint32_t length, uint32_t &final);
 
 #endif //ZADANIE2_SERVER_H
