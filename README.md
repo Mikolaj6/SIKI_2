@@ -5,5 +5,5 @@ The goal of this project was to write a low level distributed web application fo
 Protocole description is in polish (10 pages too much to translate ;)):
 
 Build:
-With Cmake creates executable files, or wih makefile. Both methods require global boost and ptthreads installation. 
-is to
+
+With Cmake, or wih makefile. Both methods require global boost and ptthreads installation.
